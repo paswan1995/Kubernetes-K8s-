@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: manugatla/nopcommerce
+    ports:
+    - containerPort: 80
+
+---
+Title: KGF
+Release-Date: 2009
+director: Anil Paswan
+Total Collection: 77cr
+Producer: Raj Mouli
+Languages:
+  - Hindi
+  - Tamil
+  - Telgu
+  - Kanad
+  - English
+cast:
+  - name: yash
+  - role: rocky bhai
+  - name: S.dutt
+  - role: Villan
+---

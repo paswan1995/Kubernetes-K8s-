@@ -1,0 +1,18 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata: 
+  name: job 
+spec: 
+  template: 
+    metadata: 
+      name: job 
+    spec: 
+      restartPolicy:  Never
+      containers: 
+        - name: job
+          image: redfiree/spc 
+          command: 
+            - sleep 
+            - 10s
+         
