@@ -68,7 +68,7 @@
                        = so we want to run docker container in production so for that we needs lots of server where docker installed , consider that to be a __node__.
 to speak to that cluster we need some way of communication that is __client__.
 
-* # State
+*  State
                        = state is some meaningful information about your application or any things
 
 * Stateful Applications
