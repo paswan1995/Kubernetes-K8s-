@@ -61,7 +61,9 @@
 ![preview](images/11.png)
 
 * __Node__
-                       = A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster. Each Node is managed by the control plane. A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
+                       = node = what is requrire to run your container? 
+                       = cluster = what is necessary for you to tell work to the cluster?
+                        A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster. Each Node is managed by the control plane. A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
 * __Cluster__
                        = cluster is a combination of multiple machine or * Work is running application in a docker container.
 * __what is node and cluster?__
@@ -99,12 +101,7 @@ to speak to that cluster we need some way of communication that is __client__.
                        = It means you type commands , manually running a commands to create a NopCommerce is a Imperative way. 
 
 * __What is k8s ?__      
-                      = k8s is production grade container management , once your application has container k8s can do what is necessary to take your container techonolgy into production where n no. of user can basically use your application.  
-                      
-                      what is requrire to run your container 
-                      what is necessary for you to tell work to the cluster 
-
-
+                      = k8s is production grade container management , once your application has container k8s can do what is necessary to take your container techonolgy into production where n no. of user can basically use your application.
 
 * __Pet Vs Cattle__
 
