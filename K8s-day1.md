@@ -86,7 +86,7 @@ to speak to that cluster we need some way of communication that is __client__.
                       = you break that huge service into small component based on its functionality or based on the request or based on your domain so then becomes a microservice. 
                       refer here= https://goteleport.com/blog/microservices-containers-kubernetes/                  
 
-*  Desired State
+* __Desired State__
                       = In Kubernetes, the desired state is how your infrastructure or application should function once running. The controller is the HVAC equipment — all the mysterious machinery that gets you from 0 to desired state. The temperature you set is your configuration. 
                       in k8s always we speak what is that we want so that is basically called as Desired State. what is that your application wants.
                       where you tell Kubernetes i want to run mysql container or i want to have or run 3 mysql container
