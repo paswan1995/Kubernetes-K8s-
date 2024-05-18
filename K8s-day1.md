@@ -57,27 +57,55 @@
 * # Terms
 
 * # Distributed System 
-*                      = in Distributed System there is no server or client or any thing become client or server.
+                      = in Distributed System there is no server or client or any thing become client or server.
 ![preview](images/11.png)
+
 * # Node
+                       = A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster. Each Node is managed by the control plane. A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
 * # Cluster 
-*                      = cluster is a combination of multiple machine or * Work is running application in a docker container
+                       = cluster is a combination of multiple machine or * Work is running application in a docker container.
+* what is node and cluster?
+                       = so we want to run docker container in production so for that we needs lots of server where docker installed , consider that to be a __node__.
+to speak to that cluster we need some way of communication that is __client__.
+
 * # State
-*                      = state is some meaningful information about your application or any things
+                       = state is some meaningful information about your application or any things
+
 * Stateful Applications
-*                      = stateful applications are the which stores the date somewere in the local systems.
+                       = stateful applications are the which stores the date somewere in the local systems.
+
 * Stateless Applications
-*                      = A system is stateless when it doesn't need to store any data within itself. Its store the data in database 
+                       = A system is stateless when it doesn't need to store any data within itself. Its store the data in database 
+
 * # Monolith 
-*                      = Monolithic in general is something that is a single large block, indivisible, inflexible, and moveable. or refer here: https://www.geeksforgeeks.org/kubernetes-monolithic-architecture-of-kubernetes/ 
-Monolith is not deffinety is smallest server. Monolith is running your whole of application as of it isone huge component, so running whole Ecommerce in one server or Designing whole Ecommerce in one server. 
+                      = Monolithic in general is something that is a single large block, indivisible, inflexible, and moveable. or refer here: https://www.geeksforgeeks.org/kubernetes-monolithic-architecture-of-kubernetes/ 
+                      Monolith is not deffinety is smallest server. Monolith is running your whole of application as of it is one huge component, so running whole Ecommerce in one server or Designing whole Ecommerce in one server. 
 ![preview](images/12.png) 
+
 * # Microservices 
-*                      = you break that huge service into small component based on its functionality or based on the request or based on your domain so then becomes a microservice. 
-* refer here= https://goteleport.com/blog/microservices-containers-kubernetes/                  
+                      = you break that huge service into small component based on its functionality or based on the request or based on your domain so then becomes a microservice. 
+                      refer here= https://goteleport.com/blog/microservices-containers-kubernetes/                  
+
 * # Desired State
-*                      = In Kubernetes, the desired state is how your infrastructure or application should function once running. The controller is the HVAC equipment — all the mysterious machinery that gets you from 0 to desired state. The temperature you set is your configuration. 
-* # Declarative vs Imperative
+                      = In Kubernetes, the desired state is how your infrastructure or application should function once running. The controller is the HVAC equipment — all the mysterious machinery that gets you from 0 to desired state. The temperature you set is your configuration. 
+                      in k8s always we speak what is that we want so that is basically called as Desired State. what is that your application wants.
+                      where you tell Kubernetes i want to run mysql container or i want to have or run 3 mysql container
+
+# Since k8s can manage container it can basically create those containers it can do configurations what we ask for running this we have 2 ways
+
+* # Declarative 
+                      = You try to write a manifest file or manifest file is nothing but its a yaml file. Writting a Docker compose is Declarative way .   
+* # Imperative
+                       = It means you type commands , manually running a commands to create a NopCommerce is a Imperative way. 
+
+* # What is k8s ?      
+                      = k8s is production grade container management , once your application has container k8s can do what is necessary to take your container techonolgy into production where n no. of user can basically use your application.  
+                      
+                      what is requrire to run your container 
+                      what is necessary for you to tell work to the cluster 
+
+
+
 * # Pet Vs Cattle
 
 ![preview](images/1.png)
