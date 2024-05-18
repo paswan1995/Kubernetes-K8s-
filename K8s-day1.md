@@ -56,28 +56,28 @@
 
 * # Terms
 
-*  __Distributed System__
+* __Distributed System__
                       = in Distributed System there is no server or client or any thing become client or server.
 ![preview](images/11.png)
 
-*  __Node__
+* __Node__
                        = A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster. Each Node is managed by the control plane. A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
-*  __Cluster__
+* __Cluster__
                        = cluster is a combination of multiple machine or * Work is running application in a docker container.
 * __what is node and cluster?__
                        = so we want to run docker container in production so for that we needs lots of server where docker installed , consider that to be a __node__.
 to speak to that cluster we need some way of communication that is __client__.
 
-*  __State__
+* __State__
                        = state is some meaningful information about your application or any things
 
 * __Stateful Applications__
                        = stateful applications are the which stores the date somewere in the local systems.
 
-*__Stateless Applications__
+* __Stateless Applications__
                        = A system is stateless when it doesn't need to store any data within itself. Its store the data in database 
 
-*  __Monolith__
+* __Monolith__
                       = Monolithic in general is something that is a single large block, indivisible, inflexible, and moveable. or refer here: https://www.geeksforgeeks.org/kubernetes-monolithic-architecture-of-kubernetes/ 
                       Monolith is not deffinety is smallest server. Monolith is running your whole of application as of it is one huge component, so running whole Ecommerce in one server or Designing whole Ecommerce in one server. 
 ![preview](images/12.png) 
@@ -95,10 +95,10 @@ to speak to that cluster we need some way of communication that is __client__.
 
 * __Declarative__ 
                       = You try to write a manifest file or manifest file is nothing but its a yaml file. Writting a Docker compose is Declarative way .   
-*  __Imperative__
+* __Imperative__
                        = It means you type commands , manually running a commands to create a NopCommerce is a Imperative way. 
 
-*  __What is k8s ?__      
+* __What is k8s ?__      
                       = k8s is production grade container management , once your application has container k8s can do what is necessary to take your container techonolgy into production where n no. of user can basically use your application.  
                       
                       what is requrire to run your container 
