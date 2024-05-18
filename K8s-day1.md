@@ -65,7 +65,8 @@
                        = cluster = what is necessary for you to tell work to the cluster?
                         A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster. Each Node is managed by the control plane. A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
 * __Cluster__
-                       = cluster is a combination of multiple machine or * Work is running application in a docker container.
+                       = cluster is a combination of multiple machine or A Kubernetes cluster is a set of nodes that run containerized applications.
+                        Work is running application in a docker container.
 * __what is node and cluster?__
                        = so we want to run docker container in production so for that we needs lots of server where docker installed , consider that to be a __node__.
 to speak to that cluster we need some way of communication that is __client__.
@@ -161,20 +162,25 @@ to speak to that cluster we need some way of communication that is __client__.
      * Handells all the communication of k8s cluster 
      * Let it be internal or external
      * kube-api server exposes functionality over HTTPs protocol and provides REST API
-
+     * kubeapsi serve is a stateless 
 * # etcd 
+     * when k8s was being develpoed to store the state of k8s we need some database, what is state of k8s,how many nodes are there how many containers did you create, what are its configuration anything that k8s has stored somewhere and that somewhere is __etcd__ 
      * refer here: https://etcd.io/
      * This is memory of k8s cluster 
-
+     * etcd is statefull
 * # scheduler 
      * scheduler is responsible for creating k8s objects and scheduling them on right node 
 
 * # controller 
      * Controller manger is resposible for maintaining desired state
+     * controller is a watchdog it is that loop that runs the all time e.g: you want to run 3 mysql containers, this controller is always check whethere 3 are running or not you asked for 3 but 2 are present then controller will figure out desired state is 3 but the actuall state is 2 so i need to create 1 more container.
      * This reconcilation loop that checks for desired state and if it mis matches doing the necessary steps is done by controller 
+     * refer here:https://directdevops.blog/2019/10/10/kubernetes-master-and-node-components/
 
 * # kubelet 
-     * This is the agent of control plane 
+     * This is the agent of control plane on every node 
+     * it listen what control plane has to says, create a new container so it will do what is necessary for you. So any work that has been done on the node is handle by __kubelet__ .
+     * so kublete is agent of k8s control plane on every node , to listen to the instruction from contol plane that is agent of k8s cluster.
 
 * # Container runtime 
      * container technology to be used in k8s cluster 
@@ -239,3 +245,19 @@ to speak to that cluster we need some way of communication that is __client__.
         * GKS
 * Playground for learning , Refer here: https://labs.play-with-k8s.com/ 
 * ![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)
+
+
+
+
+# note 
+* here 2 things are extra Before 1.24 k8s there was special treatment for docker you just install docker then kubeadm everythings get to work. But now that is not the case We have to install cri-dockerd and every time whenever we executing `kubeadm` commands we have to give cri socket that is the first thing.
+* 2nd thing is K8s is by default does not come up with default network policy. so if you remember when you install docker you will get `bridge` simillarly we you install K8s you don't get any networks so you have to choose network policies or you have to choose network driver so we have choosen `flannel`. 
+* There are other things the reasion i have choosen flannel, `flannel` is very simillar like docker swarm and underlay network and overlay network gets created. That's the reasion i have choosen flannel. There are many other 'CNI's'
+* so this is something flannel expects, other CNI's do not requires this but flannel requires this that;s the reasion i have done this.
+
+## What is Overlay Network and Underlay Network ?
+
+refer here: https://mostafizur99.medium.com/connecting-containers-with-vxlan-overlay-networks-mastering-multi-container-host-networking-a72cc561c098 
+or https://directdevops.blog/2019/10/07/docker-networking-series-ii-overlay-networks/
+![preview](images/14.png) 
+![preview](images/15.png)
