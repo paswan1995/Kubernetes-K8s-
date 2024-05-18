@@ -77,7 +77,7 @@ to speak to that cluster we need some way of communication that is __client__.
 * Stateless Applications
                        = A system is stateless when it doesn't need to store any data within itself. Its store the data in database 
 
-* # Monolith 
+*  Monolith 
                       = Monolithic in general is something that is a single large block, indivisible, inflexible, and moveable. or refer here: https://www.geeksforgeeks.org/kubernetes-monolithic-architecture-of-kubernetes/ 
                       Monolith is not deffinety is smallest server. Monolith is running your whole of application as of it is one huge component, so running whole Ecommerce in one server or Designing whole Ecommerce in one server. 
 ![preview](images/12.png) 
