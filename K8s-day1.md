@@ -283,6 +283,12 @@ to speak to that cluster we need some way of communication that is __client__.
 ```
 `sudo vi /etc/hostname` after this write name in vi editor after this
 `sudo systemctl reboot`
+
+or 
+
+sudo hostnamectl set-hostname Master(newhostname)
+then exit and relogin
+ 
 ```
 
 ![preview](images/16.png)
