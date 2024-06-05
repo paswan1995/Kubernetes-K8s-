@@ -243,11 +243,177 @@ to speak to that cluster we need some way of communication that is __client__.
         * AKS
         * EKS
         * GKS
+# or 
+
+# Kubernetes architecture
+* k8s has 2 types of nodes
+       * Master 
+       * node (minion) 
+* for k8s architectural components refer here: https://directdevops.blog/2019/10/10/kubernetes-master-and-node-components/
+
+# Kubernetes installation options
+
+* self hosted:
+      * Single Node: 
+          * k3c
+          * kind
+          * minikube 
+      * Multinode:
+          * binaries
+          * kubeadm (lets try this)
+          * on cloud (AWS): 
+              * kubespray Refer Here: https://github.com/kubernetes-sigs/kubespray
+          * Baremetal Refer Here: https://platform9.com/blog/kubernetes-on-bare-metal-why-and-how/    
+     
 * Playground for learning , Refer here: https://labs.play-with-k8s.com/ 
-* ![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)
+
+# Single Master K8s installation using kubeadm
+
+## installing kubernetes cluster on ubuntu vms 
+
+* create 3 ubuntu vms which are accesible to each other with atlest 2 vCPUS and 4 GB RAM
+* Installation method (kubeadm) which is something we will be using in on-premises k8s
+* Refer here: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/   for kubeadm installation on single master node
+  
+# steps
+
+* You can change hostname from this `ubuntu@ip-172-31-53-206:` to this `ubuntu@node-1:~$`
+* with the help of this command 
+
+```
+`sudo vi /etc/hostname` after this write name in vi editor after this
+`sudo systemctl reboot`
+```
+
+![preview](images/16.png)
+
+* Install docker on all nodes 
+* Install docker container runtime on both machines.
+
+```
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+sudo usermod -aG docker ubuntu
+exit 
+relogin
+docker info
+
+## or
+
+sudo apt install docker.io -y
+sudo usermod -aG docker ubuntu
+docker info
+exit 
+relogin
+docker info
+
+## or 
+
+ sudo apt update
+ sudo apt install docker.io -y
+ sudo newgrp docker
+ sudo chmod 777 /var/run/docker.sock
+ cd ~
+ exit
+ docker info
+
+```
+
+# Install kubelet, kubeadm and kubectl on all nodes 
+
+* Installing kubadm, kubectl, kubelet
+* refer here: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
+
+* Run the below commands as root user in all the nodes 
+
+```
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl 
+`till here use above commands in both vms Master and 2 nodes`
+
+```
+* Now lets configure cri-dockerd as k8s doesnot directly communicate with docker Refer Here.
+* Download a deb or rpm package acording to your linux distribution Refer Here: https://github.com/Mirantis/cri-dockerd/releases
+* copy this link :  cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb from above link
+
+```
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.9/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb
+
+sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+
+```
+
+* ssh into master node and execute as root user
+```
+sudo -i
+kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
+
+```
+* This execution should lead to some output as shown below
+
+```
+ mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
+        --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c
+
+```
+* 
+* Now ssh into node1 and execute join command as root user
+  
+ ```
+ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
+        --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c\
+                --cri-socket "unix:///var/run/cri-dockerd.sock"
+```
+
+* Now in the master node execute `kubectl get nodes`
+![preview](images/17.png)
+* Now we need to configure CNI Refer Here: https://kubernetes.io/docs/concepts/cluster-administration/addons/#networking-and-network-policy
+* Lets install weavenet or flannel
+* `kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml` or `kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml`  
+![preview](images/18.png)
+
+* master all images
+
+![preview](images/19.png)
+![preview](images/20.png)
+![preview](images/21.png)
+![preview](images/22.png)
+![preview](images/23.png)
+![preview](images/30.png)
+
+* Nodes all images
+  
+![preview](images/24.png)
+![preview](images/25.png)
+![preview](images/28.png)
+
+* node 1 images
+
+![preview](images/27.png)
+![preview](images/26.png)
+![preview](images/29.png)
 
 
-
+refer here: https://directdevops.blog/2023/04/23/devops-classroomnotes-23-apr-2023/
 
 # note 
 * here 2 things are extra Before 1.24 k8s there was special treatment for docker you just install docker then kubeadm everythings get to work. But now that is not the case We have to install cri-dockerd and every time whenever we executing `kubeadm` commands we have to give cri socket that is the first thing.
