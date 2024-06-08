@@ -407,13 +407,65 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
 ![preview](images/30.png)
 
 * Nodes all images
-  
+
+```
+##commands used while creating nodes use below command to create nodes and attach or join with the kubeadm 
+sudo apt update
+sudo hostname Node1
+exit and relogin
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+sudo usermod -aG docker ubuntu
+exit and relogin ##and check `docker info`
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo -i
+exit
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+--2024-06-08 12:54:38--  https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+ sudo -i
+ kubeadm join 172.31.49.8:6113 --token l1y810.wablslofhhzjklv1 \
+        --discovery-token-ca-cert-hash sha256:7727f4eb804d66965043a0b4bd390577cc4483e8e6621e4c4cb41cc05faffadc --cri-socket unix:///var/run/cri-dockerd.sock
+##now go to Master node and check the nodes `kubectl get nodes/no`
+```
 ![preview](images/24.png)
 ![preview](images/25.png)
 ![preview](images/28.png)
 
 * node 1 images
 
+```
+## commands used while creating nodes
+sudo apt update
+sudo hostname Node1
+exit and relogin
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+sudo usermod -aG docker ubuntu
+exit and relogin ##and check `docker info`
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo -i
+exit
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+--2024-06-08 12:54:38--  https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+ sudo -i
+ kubeadm join 172.31.49.8:6113 --token l1y810.wablslofhhzjklv1 \
+        --discovery-token-ca-cert-hash sha256:7727f4eb804d66965043a0b4bd390577cc4483e8e6621e4c4cb41cc05faffadc --cri-socket unix:///var/run/cri-dockerd.sock
+##now go to Master node and check the nodes `kubectl get nodes/no`
+```
 ![preview](images/27.png)
 ![preview](images/26.png)
 ![preview](images/29.png)
