@@ -413,6 +413,7 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
 sudo apt update
 sudo hostname Node1
 exit and relogin
+##install docker on all nodes as well as master
 curl -fsSL https://get.docker.com -o install-docker.sh
 sh install-docker.sh
 sudo usermod -aG docker ubuntu
@@ -445,6 +446,7 @@ sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 sudo apt update
 sudo hostname Node1
 exit and relogin
+##install docker on all nodes as well as master
 curl -fsSL https://get.docker.com -o install-docker.sh
 sh install-docker.sh
 sudo usermod -aG docker ubuntu
