@@ -347,6 +347,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 * Download a deb or rpm package acording to your linux distribution Refer Here: https://github.com/Mirantis/cri-dockerd/releases
 * copy this link :  cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb from above link
 
+* Configuring CRI runtime
+
 ```
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.9/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb
 
@@ -354,15 +356,17 @@ sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 
 ```
 
-* ssh into master node and execute as root user
+* ssh into master node and execute as root user / Choose your master (node-1) become a root user
 ```
 sudo -i
 kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
 
 ```
-* This execution should lead to some output as shown below
+* This execution should lead to some output as shown below / When executed this command will give the output as shown below
 
 ```
+Your Kubernetes control-plane has initialized successfully!
+To start using your cluster, you need to run the following as a regular user:
  mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -381,7 +385,7 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
         --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c
 
 ```
-* 
+  
 * Now ssh into node1 and execute join command as root user
   
  ```
@@ -397,8 +401,40 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
 * `kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml` or `kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml`  
 ![preview](images/18.png)
 
-* master all images
+# master all images
 
+```
+# this command is specific for master given below
+
+sudo apt update
+sudo vi /etc/hostname
+sudo systemctl reboot
+# install docker 
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+sudo usermod -aG docker ubuntu
+exit and relogin
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+sudo -i
+## Choose your master (node-1) become a root user
+kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
+exit 
+# now run regular user 
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+kubectl get nodes
+```
 ![preview](images/19.png)
 ![preview](images/20.png)
 ![preview](images/21.png)
@@ -411,8 +447,8 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
 ```
 ##commands used while creating nodes use below command to create nodes and attach or join with the kubeadm 
 sudo apt update
-sudo hostname Node1
-exit and relogin
+sudo vi /etc/hostname
+sudo systemctl reboot
 ##install docker on all nodes as well as master
 curl -fsSL https://get.docker.com -o install-docker.sh
 sh install-docker.sh
@@ -425,8 +461,7 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
-sudo -i
-exit
+# Configuring CRI runtime 
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 --2024-06-08 12:54:38--  https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
