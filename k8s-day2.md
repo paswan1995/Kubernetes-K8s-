@@ -41,7 +41,8 @@
 # k8s ways of working
 
 * For k8s everything is object. The objects are exposed over api.
-  we can find out all the resources we can create in a cluster by executing a simple command . 
+* we can find out all the resources we can create in a cluster by executing a simple command . 
+* Kube-api server exposes k8s functionality over rest api
 
 ```
 kubectl api-resources
@@ -68,5 +69,39 @@ kubectl get <resource-type> -o wide
 * To view a particular object
 * `kubectl describe <resource-type> <resource-name>`
   
-![preview](images)
-![preview](images)
+![preview](images/36.png)
+
+* refer:https://kubernetes.io/docs/reference/using-api/client-libraries/
+
+* create objects in k8s can be done in 2 ways / We will be using kubectl and kubectl has two modes of working
+       * imperative:
+           * We construct a command line to create a object
+           * refer: https://kubernetes.io/docs/tasks/manage-kubernetes-objects/imperative-command/
+       
+       * declarative:
+           * We express what we want (desired state) in a yaml file
+           * this helps in automation, reusable, consistent
+           * we create k8s manifests in yaml files and pass it to the kubectl
+           * this is recommeded approach.
+           * kubectl supports two simple commands if we have manifests 
+                  * apply: to create or update changes kubectl apply -f <mainfestfile/folderpath>
+                  * delete: to remove the objects kubectl delete -f <mainfestfile/folderpath>
+
+* How to write manifest files
+    * Lets understand manifest file structure
+    * Generally manifest files have the following structures
+
+```
+apiversion = passed by us 
+kind = passed by us 
+metadata = passed by us 
+spec = passed by us 
+status = result of execution
+```   
+
+* apiversion: https://kubernetes.io/docs/reference/using-api/
+* kind: This represents the types of object which we are creating
+* medadata:
+     * here we provide name, label
+* spec: this is specification what we want 
+* Navigate to api reference: https://kubernetes.io/docs/reference/
