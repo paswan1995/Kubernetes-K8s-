@@ -8,6 +8,9 @@
 
 * Setup auto-completion refer here: https://kubernetes.io/docs/reference/kubectl/quick-reference/#kubectl-autocomplete
 
+![preview](images/35.png)
+
+
 # Atomic unit of k8s = Pod
 
 * Pod Lifecycle 
@@ -59,6 +62,8 @@ kubectl get <resource-type> -o wide
 * to understand what are options in a resource
 
 `kubectl explain <resource-type>`
+
+![preview](images)
 
 * To view a particular object
 * `kubectl describe <resource-type> <resource-name>`

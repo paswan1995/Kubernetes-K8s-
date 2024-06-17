@@ -359,7 +359,7 @@ sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 * ssh into master node and execute as root user / Choose your master (node-1) become a root user
 ```
 sudo -i
-kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
+kubeadm init --pod-network-cidr "10.244.0.0/16" --cri-socket unix:///var/run/cri-dockerd.sock
 
 ```
 * This execution should lead to some output as shown below / When executed this command will give the output as shown below
@@ -390,7 +390,7 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
   
  ```
  kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
-        --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c\
+        --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c \
                 --cri-socket "unix:///var/run/cri-dockerd.sock"
 ```
 
@@ -424,8 +424,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 sudo -i
-## Choose your master (node-1) become a root user
-kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
+## Choose your master become a root user
+kubeadm init --pod-network-cidr "10.244.0.0/16" --cri-socket unix:///var/run/cri-dockerd.sock
 exit 
 # now run regular user 
 mkdir -p $HOME/.kube
@@ -499,6 +499,9 @@ wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-docke
 --2024-06-08 12:54:38--  https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.14/cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
  sudo -i
+ ## ssh into master node and execute as root user
+ kubeadm init --pod-network-cidr "10.244.0.0/16" --cri-socket unix:///var/run/cri-dockerd.sock
+
  kubeadm join 172.31.49.8:6113 --token l1y810.wablslofhhzjklv1 \
         --discovery-token-ca-cert-hash sha256:7727f4eb804d66965043a0b4bd390577cc4483e8e6621e4c4cb41cc05faffadc --cri-socket unix:///var/run/cri-dockerd.sock
 ##now go to Master node and check the nodes `kubectl get nodes/no`
