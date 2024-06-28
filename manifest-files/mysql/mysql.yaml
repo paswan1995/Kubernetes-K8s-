@@ -1,0 +1,21 @@
+---
+#creating container of mysql in pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: trail3
+spec:
+  containers:
+    - image: mysql:8.0-debian
+      name: mysql 
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootroot
+        - name: MYSQL_USER
+          value: anil
+        - name: MYSQL_DATABASE
+          value: emp  
+        - name: MYSQL_PASSWORD
+          value: rootroot 
+

@@ -1,0 +1,31 @@
+---
+apiVersion:	v1
+kind: Pod
+metadata:
+  name: httpd-pod
+spec:
+  containers:
+    - name: httpd_pod
+      image: httpd:2.4
+      ports:
+        - containerPort: 80 
+          protocol: "TCP" 
+
+---
+#httpd twice pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-twicepod
+spec:
+  containers:
+    - name: httpd-twicepod1
+      image: httpd:2.4
+      ports: 
+        - containerPort: 80 
+          protocol: "TCP"
+    - name: httpd-twicepod2
+      image: httpd:2.4
+      ports: 
+        - containerPort: 80 
+          protocol: "TCP" 

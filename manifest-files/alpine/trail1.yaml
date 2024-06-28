@@ -1,0 +1,28 @@
+---
+# alpine container in a pod, it will die coz cmd not given 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: trail1 
+spec:
+  containers:
+    - name: dyingalpine1
+      image: alpine
+
+
+---
+# alpine container in pod with sleep 1d
+
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: trail2
+spec:
+  containers:
+    - name: alpine1d
+      image: alpine 
+      args:
+        - sleep 
+        - 1d
+          

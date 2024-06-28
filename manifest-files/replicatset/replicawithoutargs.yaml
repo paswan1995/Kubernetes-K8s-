@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: rs-without-args
+  label:
+    name: trail1 
+spec: 
+  minReadySeconds: 10 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: alpinepod
+  template: 
+    metadata: 
+      labels: 
+        app: alpinepod
+        env: dev 
+    spec: 
+      containers: 
+        - name: alpinepod  
+          image: alpine 
+          command:
+            - sleep 
+            - 1d
+          resources: 
+            limits: 
+              memory: 512Mi
+              cpu: 500m
+

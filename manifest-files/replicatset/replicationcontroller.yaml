@@ -1,0 +1,20 @@
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: trailrc1
+  labels: 
+    app=nginx
+    env=dev
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+  template: 
+    metadata:
+      name: nginx 
+      labels: 
+        app=nginx
+        env= dev 
+    

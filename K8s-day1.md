@@ -513,6 +513,11 @@ sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 
 refer here: https://directdevops.blog/2023/04/23/devops-classroomnotes-23-apr-2023/
 
+# ensure that all of the machine is in the same network in k8s to communicate each other if you created one machine after one machine.
+# you can search on google if you forget the Join Token `search print join kubeadm command` 
+# in wave net cri socket maybe we dont need to give cri socket/cidr range  
+
+
 # note 
 * here 2 things are extra Before 1.24 k8s there was special treatment for docker you just install docker then kubeadm everythings get to work. But now that is not the case We have to install cri-dockerd and every time whenever we executing `kubeadm` commands we have to give cri socket that is the first thing.
 * 2nd thing is K8s is by default does not come up with default network policy. so if you remember when you install docker you will get `bridge` simillarly we you install K8s you don't get any networks so you have to choose network policies or you have to choose network driver so we have choosen `flannel`. 
@@ -525,3 +530,9 @@ refer here: https://mostafizur99.medium.com/connecting-containers-with-vxlan-ove
 or https://directdevops.blog/2019/10/07/docker-networking-series-ii-overlay-networks/
 ![preview](images/14.png) 
 ![preview](images/15.png)
+
+
+## you can practice k8s directly with kubernetes playground, killercoda just like Docker playground
+
+
+#

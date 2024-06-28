@@ -44,6 +44,7 @@
 * we can find out all the resources we can create in a cluster by executing a simple command . 
 * Kube-api server exposes k8s functionality over rest api
 
+`kubectl get nodes -o wide`
 ```
 kubectl api-resources
 ```
@@ -63,7 +64,13 @@ kubectl get <resource-type> -o wide
 * to understand what are options in a resource
 
 `kubectl explain <resource-type>`
+`kubectl explain pod or kubectl explain deploy`
 
+## grep command
+
+`kubectl api-resources | grep (resource-types) =volume,deploy,no `
+* kubectl describe pods=type nginx=name of pod  
+* kubectl describe nodes node-1 ( if you have 3 nodes like  node-1 , node-2, node-3) and you want info.
 ![preview](images)
 
 * To view a particular object
