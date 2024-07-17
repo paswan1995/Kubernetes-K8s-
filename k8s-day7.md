@@ -203,8 +203,3 @@ spec:
 
 * Now try making a replicaset,  deployment and expose using service.
 
-
-
-
-
-* ![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)![preview](images)
