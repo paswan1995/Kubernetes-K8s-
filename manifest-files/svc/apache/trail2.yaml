@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: httpd-rs
+  labels:
+    purpose: understanding
+spec: 
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpd
+  template: 
+    metadata:
+      labels:
+        app: httpd
+        env: dev
+        version: v1.0
+  spec: 
+    containers:
+      - name: apache-c 
+        image: httpd 
+        ports: 
+          - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-svc 
+spec:
+  selector: 
+    app: httpd
+  ports: 
+    - port: 80 
+      targetPort: 80

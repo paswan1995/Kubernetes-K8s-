@@ -247,7 +247,39 @@ spec:
 * create a replicaset with pod spec running alpine container without any args
 
 ```
-
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: exercise1
+  labels:
+    app: exercise1
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchExpressions: 
+      - key: xyz 
+        operator: In 
+        values: 
+          - exercise1
+          - exercise2
+  template:
+    metadata:
+      name: exercise1
+      labels: 
+        xyz: exercise1
+    spec: 
+      containers:
+        - name: withoutargs
+          image: alpine
+          resources:
+            requests: 
+              memory: "64Mi"
+              cpu: "250m"
+            limits:    
+              memory: "128Mi"
+              cpu: "500m"
 
 ```
 
@@ -262,8 +294,3 @@ spec:
 
 * Create a manifest for ReplicationController with 3 nginx pods with label `app=nginx`
 
-
-
-
-
-![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)![preview](image)

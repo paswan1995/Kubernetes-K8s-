@@ -2,29 +2,32 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata: 
-  name: rs-without-args
-  label:
-    name: trail1 
-spec: 
-  minReadySeconds: 10 
+  name: exercise1
+  labels:
+    app: exercise1
+spec:
+  minReadySeconds: 5
   replicas: 3
-  selector: 
-    matchLabels: 
-      app: alpinepod
-  template: 
-    metadata: 
+  selector:
+    matchExpressions: 
+      - key: xyz 
+        operator: In 
+        values: 
+          - exercise1
+          - exercise2
+  template:
+    metadata:
+      name: exercise1
       labels: 
-        app: alpinepod
-        env: dev 
+        xyz: exercise1
     spec: 
-      containers: 
-        - name: alpinepod  
-          image: alpine 
-          command:
-            - sleep 
-            - 1d
-          resources: 
-            limits: 
-              memory: 512Mi
-              cpu: 500m
-
+      containers:
+        - name: withoutargs
+          image: alpine
+          resources:
+            requests: 
+              memory: "64Mi"
+              cpu: "250m"
+            limits:    
+              memory: "128Mi"
+              cpu: "500m"

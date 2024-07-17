@@ -330,7 +330,16 @@ docker info
 * Installing kubadm, kubectl, kubelet
 * refer here: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 
+
 * Run the below commands as root user in all the nodes 
+* Configuring CRI runtime
+
+```
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.9/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb
+
+sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
+
+``` 
 
 ```
 sudo apt-get update
@@ -347,14 +356,6 @@ sudo apt-mark hold kubelet kubeadm kubectl
 * Download a deb or rpm package acording to your linux distribution Refer Here: https://github.com/Mirantis/cri-dockerd/releases
 * copy this link :  cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb from above link
 
-* Configuring CRI runtime
-
-```
-wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.9/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb
-
-sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
-
-```
 
 * ssh into master node and execute as root user / Choose your master (node-1) become a root user
 ```
@@ -391,7 +392,12 @@ kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
  ```
  kubeadm join 172.31.48.123:6443 --token 0fvdck.x5jufce01823myrh \
         --discovery-token-ca-cert-hash sha256:8c560c58affa7786cfb84c68fd8e498fd8c2b033a606d0e97ae3d963acab6a6c \
-                --cri-socket "unix:///var/run/cri-dockerd.sock"
+                --cri-socket "unix:///var/run/cri-dockerd.sock
+```
+```
+ kubeadm join 172.31.48.123:6443 --token og05o5.y1xm7dtsl6k3rhx7 \
+        --discovery-token-ca-cert-hash sha256:99f973b69cd0ad81c2932df3294745e6da628e70ef48d7f2719cf903ff93e78f \
+                --cri-socket unix:///var/run/cri-dockerd.sock
 ```
 
 * Now in the master node execute `kubectl get nodes`
