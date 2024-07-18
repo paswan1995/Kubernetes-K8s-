@@ -510,7 +510,7 @@ sudo dpkg -i cri-dockerd_0.3.14.3-0.ubuntu-jammy_amd64.deb
 
  kubeadm join 172.31.49.8:6113 --token l1y810.wablslofhhzjklv1 \
         --discovery-token-ca-cert-hash sha256:7727f4eb804d66965043a0b4bd390577cc4483e8e6621e4c4cb41cc05faffadc --cri-socket unix:///var/run/cri-dockerd.sock
-##now go to Master node and check the nodes `kubectl get nodes/no`
+## now go to Master node and check the nodes `kubectl get nodes/no`
 ```
 ![preview](images/27.png)
 ![preview](images/26.png)

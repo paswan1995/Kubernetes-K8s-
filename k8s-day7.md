@@ -141,7 +141,52 @@ spec:
      * replicas = 10
 
 ```
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trail2-deploy
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 600
+  replicas: 10
+  selector:
+    matchLabels:
+      app: jenkins
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 40%
+      maxUnavailable: 40%
+  template:
+    metadata:
+      labels:
+        app: jenkins
+        ver: "v1.0"
+    spec:
+      containers:
+        - name: jenkins
+          image: jenkins/jenkins:jdk-11
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+spec:
+  selector:
+    app: jenkins
+  type: NodePort
+  ports:
+    - name: jenkins
+      targetPort: 8080
+      port: 8080
+      nodePort: 31000
 
 ```
 
@@ -170,20 +215,131 @@ spec:
    * liveness check postive and negative: 
 
 ```
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: positive
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
 
+---
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: negative
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      args:
+        - sleep
+        - 1d
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
 ```
 
-![preview](images)
+![preview](images/87.png)
 
 * Refer Here for the manifest with positive and negative readiness probes
-![preview](images)
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: check-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx
+  ports:
+    - name: apache
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: positive
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: negative
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+      readinessProbe:
+        httpGet:
+          path: /admin
+          port: 80
 
 ```
 
-
-```
-
-![preview](images)
+![preview](images/88.png)
+![preview](images/89.png)
 
 * # Exercises
 

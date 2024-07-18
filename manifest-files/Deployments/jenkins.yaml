@@ -5,7 +5,7 @@ metadata:
   name: jenkins-deploy
 spec:
   minReadySeconds: 30
-  progressDeadlineSeconds: 180
+  progressDeadlineSeconds: 600
   replicas: 4
   selector:
     matchLabels:
@@ -26,6 +26,10 @@ spec:
           image: jenkins/jenkins:2.454-jdk11 
           ports: 
             - containerPort: 8080
+          resources:
+            limits: 
+              memory: 2Gi
+              cpu: 2
 ---
 apiVersion: v1 
 kind: Service
