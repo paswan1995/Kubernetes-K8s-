@@ -359,3 +359,71 @@ spec:
 
 * Now try making a replicaset,  deployment and expose using service.
 
+* ## write a deployment spec 
+  * write apache container and alpine pod with sleep 1d
+  * write health check for apache
+         * readiness
+  * expose the application to 31000 on all nodes 
+  * ensure we have 3 replicas  
+ * manifest
+  
+```
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deploy
+spec: 
+  minReadySeconds: 10
+  replicas: 4
+  selector:
+    matchLabels:
+      app: apache
+  strategy: 
+    rollingUpdate: 
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers: 
+        - name: apache
+          image: httpd 
+          ports: 
+            - name: apache-port
+              containerPort: 80
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+        - name: alpine-sleep
+          image: alpine 
+          args:
+            - sleep
+            - 1d
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-svc
+spec:
+  type: NodePort
+  selector:
+    app: apache
+  ports: 
+    - name: apache-port
+      port: 80
+      targetPort: 80
+      nodePort: 31000
+    - name: alpine-port
+      port: 8080
+      targetPort: 8080
+      nodePort: 31001
+
+```
+![preview](images/91.png)
