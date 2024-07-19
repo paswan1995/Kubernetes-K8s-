@@ -427,3 +427,6 @@ spec:
 
 ```
 ![preview](images/91.png)
+
+* # vi editor 
+* `:%d` `enter` to delete 1 shot content of vi 
