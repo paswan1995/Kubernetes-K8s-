@@ -198,11 +198,33 @@ spec:
 
 * K8s gives the following probes
 
-* __liveness probe__ : This determines whether the application in container is started correctly. If this check fails,  k8s will try to restart the container according to restartPolicy.
+* __liveness probe__ : 
 
-* __Readiness probe__ : This determines whether the container is ready to serve requests. if this check fails, the service will not forward the requests to the pod
+* Purpose: To see if a container is still running properly. 
+* What it does: If the check fails, Kubernetes restarts the container.
+* When to use it: Use it to detect and fix situations where an application gets stuck or crashes.
+* Example: Checking if an application is responding to a health check endpoint.
+* Liveness Check: Checks every 3 seconds if the application is alive.
+
+* This determines whether the application in container is started correctly. If this check fails,  k8s will try to restart the container according to restartPolicy.
+*  If a liveness check fails, Kubernetes will restart the container to try to recover it.
+
+* __Readiness probe__ :
+
+* Purpose: To see if a container is ready to handle requests.
+*  If the check fails, Kubernetes stops sending traffic to the container but does not restart it.
+*  When to use it: Use it to ensure the application is fully started and ready to serve requests.
+* Example: Checking if an application has finished loading data or initializing.
+* Readiness Check: Checks every 5 seconds if the application is ready to handle requests.
+
+*  This determines whether the container is ready to serve requests. if this check fails, the service will not forward the requests to the pod
+*  If a readiness check fails, Kubernetes will remove the container's IP address from the service endpoints, preventing it from receiving traffic.
 
 * __startup probe__: This is added for slow starting  applications, till startup probe is completed, liveness probes will not be executed.
+
+# Restart vs. Removal: 
+   *  `Liveness probe` failure restarts the container, while
+   *   `readiness probe` failure only removes the pod from the service endpoints.
 
 * __Types of checks__ : 
        * exec
