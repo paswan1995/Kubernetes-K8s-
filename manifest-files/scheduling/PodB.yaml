@@ -1,0 +1,18 @@
+---
+apiVersion: v1 
+kind: Pod 
+metadata: 
+  name: podB
+  labels:
+    name: podB
+spec:
+  containers:
+    - name: podB-c
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+

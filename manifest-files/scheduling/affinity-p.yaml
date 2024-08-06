@@ -1,0 +1,24 @@
+---
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: affinity-p
+  labels:
+    name: affinity-p
+spec:
+  affinity: 
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: 
+        - labelSelector:
+            matchLabels:
+              name: podb
+          topologyKey: kubernetes.io/hostname
+  containers:
+    - name: affinity-c
+      image: nginx
+      resources: 
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 80
