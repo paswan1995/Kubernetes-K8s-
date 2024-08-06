@@ -256,6 +256,7 @@ spec:
 * Lets apply the pod with pvc
 
 *  Lets create a mysql pod with a Persistent volume
+*  How To Create a MySQL Database, Tables and Insert Data
 
 ```
 ---
