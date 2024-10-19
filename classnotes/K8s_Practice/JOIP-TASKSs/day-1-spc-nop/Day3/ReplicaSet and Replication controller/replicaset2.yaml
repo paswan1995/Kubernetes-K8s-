@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: jenkins-rs 
+spec:
+  minReadySeconds: 5
+  replicas: 5
+  selector: 
+    matchLabels: 
+      apps: jenkins
+  template:
+    metadata:
+      name: jenkins 
+      labels: 
+        apps: jenkins 
+    spec: 
+      containers: 
+        - name: jenkins
+          image: jenkins/jenkins:lts-jdk11
+          ports: 
+            - containerPort: 8080
+        - name: alpine
+          image: alpine:3
+          args: 
+            - sleep
+            - 1d
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: rs-set
+spec: 
+  minReadySeconds: 5
+  replicas: 5
+  selector: 
+    matchLabels: 
+      apps: jenkins-rs
+  template:
+    metadata: 
+      name: jenkins-rs
+    spec: 
+      containers: 
+        - name: jenkins
+          image: jenkins/jenkins:lts-jdk11 
+          ports: 
+            - containerPort: 8080
+        - name: alpine
+          image: alpine:3
+          args: 
+            - sleep
+            - 1d
+------------------------------------------------------------
+nginx replicationcontroller / Write a manifest to create
+nginx replication controller with 3 pods
+
+---
+apiVersion: v1 
+kind: ReplicationController
+metadata: 
+  name: 
+  labels: 
+spec: 
+  minReadySeconds: 2
+  replicas: 2
+  selector:
+    app: nginx 
+  template: 
+    metadata: 
+      name: nginxpod
+      labels: 
+        apps: nginx
+    spec: 
+      containers: 
+        - name: nginx
+          image: nginx:3
+          ports: 
+            - containerPort: 80

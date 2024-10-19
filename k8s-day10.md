@@ -536,4 +536,4 @@ __The choice between stateless and stateful depends on the nature of the applica
 
 ```
 
-# 
+# StatefulSets

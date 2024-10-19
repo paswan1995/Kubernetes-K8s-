@@ -1,0 +1,17 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata: 
+  name: hellojob
+spec: 
+  backoffLimit: 5
+  template:
+    metadata:
+      name: podjob
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - image: alpine 
+          command:
+            - sleep 
+            - 10s 
