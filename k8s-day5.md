@@ -3,6 +3,102 @@
 # Q; i am using my desktop in my desktop i have kubectl  but in my company there are 5 k8s clusters how can use same kubectl for multiple clusters
 __ans: go in kubectl context section__
 
+
+# Pod
+
+* Pod is atomic or smallest unit of creation in K8s
+* Each Pod gets an unique ip address
+* Each Pod has one or more containers in it.
+* All the containers in the POd share same namespaces.
+* K8s scaling means scaling Pods but not containers in it.
+* Easiest way to create a pod
+   * `kubectl run <name> --image <image>`
+![preview](images/145.png)
+
+# Primary Workload of K8s = Pod
+
+* Pod is an atomic unit of k8s which contains Containers
+* Pod will have containers
+* In k8s every resource which we create needs a name
+
+# Writing Pod Manifests
+
+* Most of the k8s manifests have 4 sections (apiVersion, kind, metadata, spec) which will represent resource and desired state and there will a 5 section (status) which represents status (generated)
+
+* Navigate to Apireference
+    * https://kubernetes.io/docs/reference/
+    * 1.32[https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/]
+    * 1.31
+
+* Lets create an nginx pod i.e. pod with nginx container in it
+ 
+* Now lets look at some useful kubectl commands
+# Watch
+kubectl get pods -w
+# get more info
+kubectl get pods -o wide
+# describe resource
+kubectl describe pod nginx-pod
+# Get the the output in yaml format
+kubectl get pod nginx-pod -o yaml
+
+* I want to run the following containers give me docker commands
+
+    * alpine container with runs for 1 day 
+       * `docker run -d --name alptest alpine sleep 1d`
+    * mysql with root password, user , password and database
+       * `docker run -d --name mysqltest -e MYSQL_ROOT_PASSWORD=test123 mysql:9`
+
+* Manifest for alpine
+```
+---
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: alpine-pod
+spec:
+  containers:
+    - name: alpine-c 
+      image: alpine:3.21
+      args:
+        - sleep
+        - 1d
+```
+
+* Manifest for mysql
+
+```
+---
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: mysql-pod
+spec:
+  containers:
+    - name: mysql-c 
+      image: mysql:9
+      ports:
+        - containerPort: 3306 
+      env: 
+        - name: MYSQL_USER
+          value: anil 
+        - name: MYSQL_PASSWORD
+          value: rootroot
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootroot
+        - name: MYSQL_DATABASE
+          value: anilapps
+```
+
+* Running commands in the container belonging to a Pod
+* `kubectl exec <pod-name> -- <command>`
+* `kubectl exec -it mysql-pod -- /bin/bash`
+
+![preview](images/146.png)
+
+* Docker restricted resources and how to create 
+    * Refer Here: https://directdevops.blog/2019/10/07/docker-logging-docker-memory-cpu-restrictions/
+
 * __Pod Life cycle__ 
     * Pod-Phases : https://kubernetes-docsy-staging.netlify.app/docs/concepts/workloads/pods/pod-lifecycle/
         * A Pod's `status` field is a PodStatus object, which has a `phase` field. 
