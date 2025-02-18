@@ -660,3 +660,9 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 ![preview](images/143.png)
 
 * Exercise: Create a two node k8s cluster in both aws and azure using virtual machines
+
+lets enable auto-complete in kubectl
+------------------------------------
+ * https://kubernetes.io/docs/reference/kubectl/quick-reference/#kubectl-autocomplete
+
+* To get to know all the resources supported by k8s cluster execute the command `kubectl api-resources`
