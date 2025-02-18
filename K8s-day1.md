@@ -660,5 +660,3 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 ![preview](images/143.png)
 
 * Exercise: Create a two node k8s cluster in both aws and azure using virtual machines
-
-#
