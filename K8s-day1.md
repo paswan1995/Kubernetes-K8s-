@@ -541,4 +541,124 @@ or https://directdevops.blog/2019/10/07/docker-networking-series-ii-overlay-netw
 ## you can practice k8s directly with kubernetes playground, killercoda just like Docker playground
 
 
+# or installation guide is for Kubernetes v1.32.
+
+Self-hosted options – kubeadm
+-----------------------------
+
+* offical docs: [https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/]
+
+* Hardware requirements:
+  * 2 GB or more of RAM per machine
+  * 2 CPUs or more for control plane machines.
+  * Full network connectivity between all machines in the cluster (public or private network is fine).
+  * Ensure control plane have the following ports open
+      * control Plane: https://kubernetes.io/docs/reference/networking/ports-and-protocols/#control-plane
+
+  * Ensure nodes have following ports opened
+      * https://kubernetes.io/docs/reference/networking/ports-and-protocols/#node
+
+* K8s control plane nodes have to be linux, whereas we can have windows nodes.
+
+Our setup in AWS
+-----------------
+
+* Ensure you have a security group which opens necessary ports
+* Create three t2.medium or t3.medium servers with ubuntu 22.04 in the same vpc
+![preview](images/140.png)
+
+Steps
+-----
+
+* Install docker on all the nodes / via script
+
+```
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+sudo usermod -aG docker ubuntu
+```
+
+* Now exit and relogin and verify docker installation with docker info on all nodes
+
+* Now install cri-dockerd https://mirantis.github.io/cri-dockerd/usage/install-manually/
+
+```
+cd /tmp
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.16/cri-dockerd_0.3.16.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.16.3-0.ubuntu-jammy_amd64.deb
+```
+
+* Our docker engine will be running on CRI-Socket unix:///var/run/cri-dockerd.sock
+
+* Now install kubeadm, kubelet and kubectl on all three nodes
+
+```
+sudo apt-get update
+# apt-transport-https may be a dummy package; if so, you can skip that package
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+# If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
+# sudo mkdir -p -m 755 /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+# This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl enable --now kubelet
+
+```
+# or Script for user data
+
+
+```
+#!/bin/bash
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+cd /tmp
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.16/cri-dockerd_0.3.16.3-0.ubuntu-jammy_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.16.3-0.ubuntu-jammy_amd64.deb
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl enable --now kubelet
+
+```
+* Now we need to create a k8s cluster based on the installations done above Refer Here: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+
+* Login into master node and become root user
+
+* sudo -i
+
+* Now initialize a k8s cluster
+`kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket "unix:///var/run/cri-dockerd.sock"`
+
+* Now observe the output from this command
+
+* To run kubectl as a not root user execute the following highlighted section
+
+![preview](images/141.png)
+
+* To join nodes to the k8s cluster which we intialized above login into nodes as root users and execute the below command which is highlighted. note we need to add --cri-socket "unix:///var/run/cri-dockerd.sock" to the join command
+
+![preview](images/142.png)
+
+* After join commands when we execute kubectl get nodes on master, the status of nodes will be not ready
+![preview](images/143.png)
+
+* Reason for this is CNI is not installed, lets install flannel-cni or Weave Net on the master node
+  * https://kubernetes.io/docs/concepts/cluster-administration/addons/ 
+```
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+ # or 
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+```
+![preview](images/143.png)
+
+* Exercise: Create a two node k8s cluster in both aws and azure using virtual machines
+
 #
