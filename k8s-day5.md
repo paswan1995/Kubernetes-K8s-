@@ -6,6 +6,8 @@ __ans: go in kubectl context section__
 
 # Pod
 
+* https://kubernetes.io/docs/concepts/workloads/pods/
+
 * Pod is atomic or smallest unit of creation in K8s
 * Each Pod gets an unique ip address
 * Each Pod has one or more containers in it.
@@ -20,6 +22,32 @@ __ans: go in kubectl context section__
 * Pod is an atomic unit of k8s which contains Containers
 * Pod will have containers
 * In k8s every resource which we create needs a name
+
+Pods will have 4 types of containers in it
+------------------------------------------
+
+* containers: These are main containers where the applications run
+
+sidecar container:
+------------------
+  * These are contianers which add additional functionality such as agents (log, monitoring etc) to the application Refer Here: https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/#what-are-sidecar-containers-in-1-28
+
+init-container: 
+--------------- 
+  * These containers are created in a sequential order before the main containers. These containers are used to do configuration. init containers are supposed to be running for a finite time. Main containers are created after init containers have finished executing
+
+ephmeral containers: 
+---------------------
+  * they are present for debugging purposes & are not part of Pod lifecycle, we inject this container with kubectl debug command
+
+```yaml
+
+
+```
+# Kubernetes Pod Lifecycle
+
+* 
+
 
 # Writing Pod Manifests
 
@@ -50,7 +78,7 @@ kubectl get pod nginx-pod -o yaml
        * `docker run -d --name mysqltest -e MYSQL_ROOT_PASSWORD=test123 mysql:9`
 
 * Manifest for alpine
-```
+```yaml
 ---
 apiVersion: v1
 kind: Pod 
@@ -67,7 +95,7 @@ spec:
 
 * Manifest for mysql
 
-```
+```yaml
 ---
 apiVersion: v1 
 kind: Pod 
@@ -142,7 +170,7 @@ spec:
    * init container: create a alpine container with sleep 30s 
    * container: run nginx or httpd 
 
-```
+```yaml
 ---
 apiVersion: v1
 kind: Pod 
@@ -173,7 +201,8 @@ spec:
 
 * Lets add two more init continers with sleep 10s and add one more container in containers
 
-```
+```yaml
+---
 apiVersion: v1
 kind: Pod
 metadata: 
@@ -238,6 +267,23 @@ spec:
 
 # Labels
 
+* Kubernetes labels are key-value pairs attached to Kubernetes objects, such as pods. They are like tags that help you organize and manage your resources.
+* Label Selectors: Label selectors are used for grouping objects, specifying requirements that determine which objects the labels must be applied to. The Kubernetes API supports equality-based and set-based selectors46.
+
+Example: In a YAML file, labels are defined under the metadata section:
+
+```yaml
+
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: nginx-pod
+  labels:
+    app: frontend
+    env: dev
+```
+* In this example, app: frontend means the pod is part of the "frontend" application.
+
 * k8s trys to forward the request to any pods which has these orange lables
 ![preview](images/59.png)
 * k8s groups the objects with the hepl of labels 
@@ -261,7 +307,7 @@ spec:
      * app = nginx
      * version = 1.0
      * for the manifest
-```
+```yaml
 ---
 apiVersion: v1
 kind: Pod
@@ -298,7 +344,7 @@ spec:
 
 * Create 3 nginx pods in a replica set with manifest
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
@@ -342,7 +388,7 @@ spec:
 
 * create a replicaset with pod spec running alpine container without any args
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
