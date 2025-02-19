@@ -34,6 +34,8 @@ sidecar container:
 
 init-container: 
 --------------- 
+  * Init containers in Kubernetes (k8s) are specialized containers that run before the main application containers within a pod start7. They perform initialization tasks, setting up prerequisites, configuring dependencies, or preparing the environment for the main containers
+
   * These containers are created in a sequential order before the main containers. These containers are used to do configuration. init containers are supposed to be running for a finite time. Main containers are created after init containers have finished executing
 
 ephmeral containers: 
@@ -46,8 +48,9 @@ ephmeral containers:
 ```
 # Kubernetes Pod Lifecycle
 
-* 
+* refer: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
+* For Kubernetes Pod the desired state is to ensure the containers in Pod are in running state. For any reason if the contianer gets into exited state, Pod will retry restarts continuously. This state is referred as `CrashLoopBackOff`
 
 # Writing Pod Manifests
 
