@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: httpd-pod
+spec: 
+  containers:
+    - name: httpd-pod
+      image: httpd 
+      ports:
+        - containerPort: 80
+      resources:
+        requests:
+          memory: 128Mi
+          cpu: 125m
+        limits:
+          memory: 256Mi
+          cpu: 250m
+  initContainers:
+    - name: httpd-init
+      image: httpd 
+      ports: 
+        - containerPort: 80 
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-pod
+spec:
+  containers:
+    - name: httpd
+      image: httpd:latest
+    - name: sidecar
+      image: alpine
+      args:
+        - sleep
+        - 1d
+  initContainers:
+    - name: test1
+      image: alpine
+      args:
+        - sleep
+        - 1d 
+    - name: test2
+      image: alpine
+      args:
+        - sleep
+        - 20s

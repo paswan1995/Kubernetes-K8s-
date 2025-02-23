@@ -1,4 +1,9 @@
-# Managed Kubernetes (Kubernetes as a Service)
+# Managed Kubernetes clusters (Kubernetes as a Service)
+
+* Cloud providers offer managed kubernetes clusters
+* Cloud providers manage the control plane i.e. we need not install k8s and the control plane will be a black box
+
+![preview](images/151.png)
 
 * All the CSP offer k8s as a service 
 
@@ -42,7 +47,15 @@
     
      *  __Pod based billing__
 
-# AKS: Azure kubernetes Cluster
+# AKS: Azure kubernetes Cluster  /   Azure Kubernetes Services (AKS)
+
+* AKS is managed k8s offered by Azure Refer Here
+
+* Lets setup AKS Cluster
+
+* Pre-reqs:
+    * Azure CLI is installed and configured
+
 
 
 * for official docs of Azure kuberentes service. 
@@ -53,7 +66,14 @@
 
 * 1} install azure cli in windows  
      * via azure docs or chocolatey  
-  
+
+     * `choco install kubernetes-cli`
+      
+      ```
+      az login 
+      az account show --output table # This command will display detailed information about the currently active subscription, including its name, ID, and tenant ID
+
+      ```
 # 2} create azure account and login 
 
 * follow the steps 
@@ -71,11 +91,11 @@
        
        * after successfully login now __Create a resource group__
        
-       * `az group create --name myResourceGroup --location southindia`
+       * `az group create --name myResourceGroup --location centralindia`
      
        * __Now Create an AKS cluster__
        
-       * `az aks create --resource-group myResourceGroup --name myAksCluster --enable-managed-identity --node-count 1 --generate-ssh-keys`   
+       * `az aks create --resource-group myResourceGroup --name myAksCluster --enable-managed-identity --node-count 2 --generate-ssh-keys`   
        
        * check `kubectl version`
        
@@ -112,7 +132,41 @@
       
        * `az aks delete --name myAKSCluster --resource-group myResourceGroup`    
 
-* 
+# or 
+
+* used commannds to create aks cluster
+
+```
+$RANDOM_ID = -join ((0..5) | ForEach-Object { Get-Random -Minimum 0 -Maximum 16 | ForEach-Object { "{0:X}" -f $_ } })
+$MY_RESOURCE_GROUP_NAME = "myAKSResourceGroup$RANDOM_ID"
+$REGION = "centralindia"
+$MY_AKS_CLUSTER_NAME = "myAKSCluster$RANDOM_ID"
+$MY_DNS_LABEL = "mydnslabel$RANDOM_ID"
+
+# Check that the variables have been set correctly:
+ 
+$MY_RESOURCE_GROUP_NAME
+$REGION
+$MY_AKS_CLUSTER_NAME
+$MY_DNS_LABEL
+
+# Use the following command to create a resource group in Azure:
+az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
+
+# create your AKS cluster with this command:
+az aks create --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME --node-count 2 --generate-ssh-keys --enable-addons monitoring
+
+# After creating the cluster, configure kubectl to connect to it:
+az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
+
+# Run this command to check if you're connected to your AKS cluster:
+kubectl get nodes
+
+```
+
+![preview](images/152.png)
+![preview](images/153.png)
+
 
 * # Namespaces
 
@@ -234,7 +288,7 @@ kubectl config set-context --current --namespace=dev
 
 *   Lets deploy an nginx pods and a service in dev namespace. Refer Here for manifests
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment

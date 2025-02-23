@@ -20,7 +20,7 @@
 
 * Demonstrate  deployment with some example 
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -78,7 +78,7 @@ spec:
   
 * Now lets make some changes in the manifest Refer Here for changes
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment

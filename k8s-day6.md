@@ -9,7 +9,7 @@
 
 * create a replicaset with pod spec running alpine container without any args 
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
@@ -67,7 +67,7 @@ image
 
 * create a service to forward rhe request to 80 port of nginx pods with labels `app=nginx` 
 
-```
+```yaml
 ---
 apiVersion: apps/v1
 kind: ReplicaSet
